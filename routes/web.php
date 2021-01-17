@@ -66,6 +66,7 @@ Route::post('/comment/answer', 'Dashboard\CommentController@answer')->middleware
 
 
 
+
 Auth::routes();
 Route::get('dashboard/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
