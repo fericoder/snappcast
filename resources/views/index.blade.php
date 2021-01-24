@@ -136,7 +136,7 @@
                             <div class="wrapper">
                                 <small>{{ $course->category->title }}</small>
                                 <h3>{{ $course->title }}</h3>
-                                {{--<p>{!! str_limit($course->body, 150) !!}</p>--}}
+                                {{--<p>{!! \Illuminate\Support\Str::limit($course->body, 150) !!}</p>--}}
                                 <div style="display: none;" class="rating"><i class="icon_star voted"></i><i class="icon_star voted"></i><i
                                             class="icon_star voted"></i><i class="icon_star"></i><i class="icon_star"></i>
                                     <small>(145)</small>

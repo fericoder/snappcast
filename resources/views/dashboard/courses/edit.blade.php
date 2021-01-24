@@ -15,14 +15,14 @@
 						<i class="la la-gear"></i>
 						</span>
                             <h3 class="m-portlet__head-text">
-                                ویرایش پست: {{ $post->title }}
+                                ویرایش پست: {{ $course->title }}
                             </h3>
                         </div>
                     </div>
-                    <a target="_blank" href="/posts/{{ $post->slug }}"><button style="margin-top: 20px;" type="submit" class="btn btn-sm btn-primary">مشاهده پست</button></a>
+                    <a target="_blank" href="/posts/{{ $course->slug }}"><button style="margin-top: 20px;" type="submit" class="btn btn-sm btn-primary">مشاهده پست</button></a>
                 </div>
                 <!--begin::Form-->
-                <form action="{{ route('post.update', $post->id)  }}" method="POST" enctype="multipart/form-data"
+                <form action="{{ route('course.update', $course->id)  }}" method="POST" enctype="multipart/form-data"
                       class="m-form m-form--fit m-form--label-align-right m-form--group-seperator">
                     @csrf
                     @method('PUT')
@@ -31,7 +31,7 @@
                             <label class="col-lg-2 col-form-label">عنوان پست:</label>
                             <div class="col-lg-6">
                                 <input type="text" name="title" {{ old('title') }} class="form-control m-input"
-                                       value="{{ $post->title }}">
+                                       value="{{ $course->title }}">
                             </div>
                         </div>
 
@@ -41,7 +41,18 @@
                             <div class="col-lg-6">
                                 <input type="text" name="description"
                                        {{ old('description') }} class="form-control m-input"
-                                       value="{{ $post->description }}">
+                                       value="{{ $course->description }}">
+                            </div>
+                        </div>
+
+                        <div class="form-group m-form__group row">
+                            <label class="col-lg-2 col-form-label">وضعیت:</label>
+                            <div class="col-lg-6">
+                                <select class="form-control m-select2" id="m_select2_2" name="status">
+                                        <option {{ $course->status == 'درحال برگزاری' ? 'selected' : '' }} value="درحال برگزاری"> درحال برگزاری </option>
+                                        <option {{ $course->status == 'شروع نشده' ? 'selected' : '' }} value="شروع نشده"> شروع نشده </option>
+                                        <option {{ $course->status == 'تکمیل شده' ? 'selected' : '' }} value="تکمیل شده"> تکمیل شده </option>
+                                </select>
                             </div>
                         </div>
 
@@ -50,7 +61,7 @@
                             <div class="col-lg-6">
                                 <select class="form-control m-select2" id="m_select2_1" name="category">
                                     @foreach ($categories as $category)
-                                        <option {{ $post->category_id == $category->id ? 'selected' : '' }} value="{{ $category->id }}"> {{ $category->title }} </option>
+                                        <option {{ $course->category_id == $category->id ? 'selected' : '' }} value="{{ $category->id }}"> {{ $category->title }} </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -62,7 +73,7 @@
                             <div class="col-lg-6">
                                 <div class="input-group date">
                                     <input type="text" name="published_at" class="form-control m-input" readonly=""
-                                           value="{{ $post->published_at }}" id="m_datetimepicker_2">
+                                           value="{{ $course->published_at }}" id="m_datetimepicker_2">
                                     <div class="input-group-append">
                                         <span class="input-group-text"><i
                                                     class="la la-calendar-check-o glyphicon-th"></i></span>
@@ -122,7 +133,7 @@
                                 <label class="col-lg-2 col-form-label">متن پست</label>
                                 <div class="col-lg-10">
                                     <textarea style="direction: rtl"  {{ old('body') }} id="body" name="body"
-                                              rows="18">{{ $post->body }}"</textarea>
+                                              rows="18">{{ $course->body }}"</textarea>
                                 </div>
                             </div>
                         </div>

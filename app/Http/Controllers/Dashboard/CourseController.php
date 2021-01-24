@@ -96,13 +96,13 @@ class CourseController extends Controller
     {
         $course = Course::find($id);
 
-        if (! Auth::user()->can('update', $course )) {
-            alert()->error('شما مجوز مورد نظر را ندارید.', 'عدم دسترسی');
-            return redirect()->back();
-        }
+        //        if (! Auth::user()->can('update', $course )) {
+//            alert()->error('شما مجوز مورد نظر را ندارید.', 'عدم دسترسی');
+//            return redirect()->back();
+//        }
 
         $categories = Category::all();
-        return view('dashboard.courses.edit', compact('Course', 'categories'));
+        return view('dashboard.courses.edit', compact('course', 'categories'));
     }
 
     /**
@@ -115,22 +115,22 @@ class CourseController extends Controller
     public function update(Request $request, $id)
     {
         if ($request->file('attachment') == null && $request->file('image') == null){
-            $course = Course::where('id', $id)->update(['user_id' => Auth::user()->id , 'title' => $request->title, 'description' => $request->description, 'category_id' => $request->category, 'published_at' => $request->published_at, 'telegram' => $request->telegram, 'body' => $request->body ]);
+            $course = Course::where('id', $id)->update(['user_id' => Auth::user()->id , 'title' => $request->title, 'description' => $request->description, 'category_id' => $request->category, 'published_at' => $request->published_at,  'body' => $request->body , 'status' => $request->status ]);
         }elseif($request->file('image') == null && $request->file('attachment') != null){
             $attachment = $this->uploadFile($request->file('attachment'));
-            $course = Course::where('id', $id)->update(['user_id' => Auth::user()->id , 'title' => $request->title, 'description' => $request->description, 'category_id' => $request->category, 'published_at' => $request->published_at, 'attachment' => "$attachment", 'telegram' => $request->telegram, 'body' => $request->body ]);
+            $course = Course::where('id', $id)->update(['user_id' => Auth::user()->id , 'title' => $request->title, 'description' => $request->description, 'category_id' => $request->category, 'published_at' => $request->published_at, 'attachment' => "$attachment",  'body' => $request->body , 'status' => $request->status ]);
         }elseif($request->file('image') != null && $request->file('attachment') == null){
             $image = $this->uploadFile($request->file('image'));
-            $course = Course::where('id', $id)->update(['user_id' => Auth::user()->id , 'title' => $request->title, 'description' => $request->description, 'category_id' => $request->category, 'published_at' => $request->published_at, 'image' => "$image", 'telegram' => $request->telegram, 'body' => $request->body ]);
+            $course = Course::where('id', $id)->update(['user_id' => Auth::user()->id , 'title' => $request->title, 'description' => $request->description, 'category_id' => $request->category, 'published_at' => $request->published_at, 'image' => "$image",  'body' => $request->body , 'status' => $request->status ]);
         }elseif($request->file('image') != null && $request->file('attachment') != null){
             $image = $this->uploadFile($request->file('image'));
             $attachment = $this->uploadFile($request->file('attachment'));
-            $course = Course::where('id', $id)->update(['user_id' => Auth::user()->id , 'title' => $request->title, 'description' => $request->description, 'category_id' => $request->category, 'published_at' => $request->published_at, 'image' => "$image",'attachment' => "$attachment", 'telegram' => $request->telegram, 'body' => $request->body ]);
+            $course = Course::where('id', $id)->update(['user_id' => Auth::user()->id , 'title' => $request->title, 'description' => $request->description, 'category_id' => $request->category, 'published_at' => $request->published_at, 'image' => "$image",'attachment' => "$attachment",  'body' => $request->body, 'status' => $request->status  ]);
         }
 
 
         alert()->success('درخواست شما با موفقیت انجام شد.', 'انجام شد');
-        return redirect()->route('courses.index');
+        return redirect()->route('course.index');
 
     }
 
