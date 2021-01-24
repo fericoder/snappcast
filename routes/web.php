@@ -45,7 +45,7 @@ Route::get('/', 'IndexController@index')->name('index');
 Route::get('/register', 'IndexController@index');
 
 
-Route::get('posts/{slug}', 'PostController@show');
+Route::get('posts/{id}/{post:slug}', 'PostController@show')->name('posts.show');
 Route::get('posts', 'PostController@index')->name('index.posts.index');
 
 Route::get('courses/{id}/{course:slug}', 'CourseController@show')->name('courses.show');

@@ -19,7 +19,7 @@
                             </h3>
                         </div>
                     </div>
-                    <a target="_blank" href="/posts/{{ $post->slug }}"><button style="margin-top: 20px;" type="submit" class="btn btn-sm btn-primary">مشاهده پست</button></a>
+                    <a target="_blank" href="{{ route('posts.show',[$post->id,$post->slug]) }}"><button style="margin-top: 20px;" type="submit" class="btn btn-sm btn-primary">مشاهده پست</button></a>
                 </div>
                 <!--begin::Form-->
                 <form action="{{ route('post.update', $post->id)  }}" method="POST" enctype="multipart/form-data"

@@ -34,7 +34,7 @@
                                 <div class="col-lg-7">
                                     <div class="post_info">
                                         <small>{{ jdate($course->published_at)->format('%d %B %Y') }}</small><br><br>
-                                        <h3><a href="/courses/{{ $course->slug  }}">{{ $course->title  }}</a></h3>
+                                        <h3><a href="{{ route('courses.show',[$course->id,$course->slug]) }}">{{ $course->title  }}</a></h3>
                                         <p>
                                             {{ str_limit($course->description, 400)  }}
                                         </p>
@@ -42,14 +42,14 @@
                                             <li style="float: left; font-family: byekan"> <div class="thumb">
                                                     <img src="{{ $course->user->avatar  }}" alt="{{ $course->title  }}">
                                                 </div> {{ $course->user['fullName']  }} </li>
-                                            <li style="font-family: iranyekan" ><a href="/courses/{{ $course->slug  }}"><button style="background-color:#c14645" type="submit" id="submit" class="btn_1 rounded"> مشاهده مطلب</button></a></li>
+                                            <li style="font-family: iranyekan" ><a href="{{ route('courses.show',[$course->id,$course->slug]) }}"><button style="background-color:#c14645" type="submit" id="submit" class="btn_1 rounded"> مشاهده مطلب</button></a></li>
                                             <li style="font-family: byekan;float: right" ><i class="icon_comment_alt"></i> {{ $course->commnetCount }}</li>
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="col-lg-5">
                                     <figure>
-                                        <a href="/courses/{{ $course->slug  }}"><img  src="{{ $course->images['848,566']  }}" alt="{{ $course->title  }}">
+                                        <a href="{{ route('courses.show',[$course->id,$course->slug]) }}"><img  src="{{ $course->images['848,566']  }}" alt="{{ $course->title  }}">
                                             <div class="preview"><span>مشاهده مطلب</span></div>
                                         </a>
                                     </figure>

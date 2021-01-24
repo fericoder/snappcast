@@ -71,7 +71,7 @@
 											@foreach ($courses as $courseItme)
 											<tr>
 												<td><a href="../category/{{ $courseItme->category()->first()->id }}">{{ $courseItme->category()->first()->title }}</a></td>
-												<td><a href="../courses/{{ $courseItme->slug }}">{{ $courseItme->title }}</a></td>
+												<td><a href="{{ route('courses.show',[$courseItme->id,$courseItme->slug]) }}">{{ $courseItme->title }}</a></td>
 											</tr>
 											@endforeach
 

@@ -9,10 +9,10 @@
             @foreach ($recentPosts as $recentPost)
                 <li>
                     <div class="alignleft">
-                        <a href="/posts/{{ $recentPost->slug }}"><img src="{{ $recentPost->images['120,80'] }}" alt="{{ $recentPost->title }}"></a>
+                        <a href="{{ route('posts.show',[$recentPost->id,$recentPost->slug]) }}"><img src="{{ $recentPost->images['120,80'] }}" alt="{{ $recentPost->title }}"></a>
                     </div>
                     <small>{{ jdate($recentPost->published_at)->ago() }}</small>
-                    <h3><a href="/posts/{{ $recentPost->slug }}" title="">{{ str_limit($recentPost->title, 50) }}</a></h3>
+                    <h3><a href="{{ route('posts.show',[$recentPost->id,$recentPost->slug]) }}" title="">{{ str_limit($recentPost->title, 50) }}</a></h3>
                 </li>
             @endforeach
         </ul>

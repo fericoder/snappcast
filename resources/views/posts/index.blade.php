@@ -31,7 +31,7 @@
                             <div class="box_grid wow animated" style="visibility: visible;">
                                 <figure class="block-reveal">
                                     <div class="block-horizzontal"></div>
-                                    <a href="/posts/{{ $post->slug  }}"><img
+                                    <a href="{{ route('posts.show',[$post->id,$post->slug]) }}"><img
                                                 src="{{ $post->images['325,215']  }}"
                                                 class="img-fluid"
                                                 alt="{{ $post->title  }}"></a>
@@ -47,7 +47,7 @@
                                 <ul>
                                     <li></li>
                                     {{--<li><i class="icon_person"></i>{{ $post->user->fullName  }} توسط: </li>--}}
-                                    <li><a href="/posts/{{ $post->slug  }}">مشاهده مطلب</a></li>
+                                    <li><a href="{{ route('posts.show',[$post->id,$post->slug]) }}">مشاهده مطلب</a></li>
                                 </ul>
                             </div>
                         </div>

@@ -146,7 +146,7 @@
 
                                 <li><i class="icon_clock_alt"></i><span style="font-family: BYekan">{{ implode(':', str_split($course->episodes->sum('timeClear'), 2) ) }} </span></li>
                                 <li><i class="icon-cart"></i><span style="font-family: BYekan">{{ $course->users->count() }}</span></li>
-                                <li><a href="/courses/{{ $course->slug  }}">مشاهده دوره </a></li>
+                                <li><a href="{{ route('courses.show',[$course->id,$course->slug]) }}">مشاهده دوره </a></li>
                             </ul>
                         </div>
                     </div>
@@ -181,7 +181,7 @@
 
                @foreach ($posts->where('type', 'podcast') as $post)
                     <div class="col-lg-4 col-md-6 wow" data-wow-offset="150">
-                        <a href="/posts/{{ $post->slug }}" class="grid_item">
+                        <a href="{{ route('posts.show',[$post->id,$post->slug]) }}" class="grid_item">
                             <figure class="block-reveal">
                                 <div class="block-horizzontal"></div>
                                 <img src="{{ $post->images['350,234'] }}" class="img-fluid" alt="{{ $post->title  }}">
@@ -213,7 +213,7 @@
                     @foreach ($posts->where('type', 'article') as $post)
                         <!-- /box_news -->
                             <div class="col-lg-6 col-xs-12">
-                            <a class="box_news" href="{{ "/posts/$post->slug" }}">
+                            <a class="box_news" href="{{ route('posts.show',[$post->id,$post->slug]) }}">
                                 <figure><img src="{{ $post->images['250,167'] }}" alt="{{ $post->title }}">
                                     <figcaption><strong>{{ jdate($post->published_at)->format('%d') }}</strong>{{ jdate($post->published_at)->format('%B') }}</figcaption>
                                 </figure>

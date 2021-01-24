@@ -65,11 +65,11 @@ class PostController extends Controller
      * @param  \App\Post  $article
      * @return \Illuminate\Http\Response
      */
-    public function show(Post $post, $slug)
+    public function show($id, Post $post)
     {
 
-        $post->where('slug', $slug)->increment('viewCount');
-        $post = Post::where('slug', $slug)->with('user', 'category', 'comments')->first();
+        $post->where('slug', $post->slug)->increment('viewCount');
+        $post = Post::where('slug', $post->slug)->with('user', 'category', 'comments')->first();
         $recentPosts = Post::where('published_at', '<',  \Carbon\Carbon::now())->orderBy('id', 'desc')->with('user')->limit(5)->get();
         $categories = Category::all();
 

@@ -129,7 +129,7 @@
                             @if ($comment->commentable_type == "App\Post")
                                 <tr>
                                     <td>{{ $comment->id  }}</td>
-                                    <td> <a target="_blank" href="/posts/{{ $comment->commentable->slug }}">{{ $comment->commentable->title  }}</a></td>
+                                    <td> <a target="_blank" href="{{ route('posts.show',[$comment->commentable->id,$comment->commentable->slug]) }}">{{ $comment->commentable->title  }}</a></td>
                                     <td>{{ $comment->user->fullName  }}</td>
                                     <td>{{ $comment->comment  }}</td>
                                     <td>{{ jdate($comment->created_at)  }}</td>
@@ -158,9 +158,10 @@
                           
 
                             @if ($comment->commentable_type == "App\Course")
+
                                 <tr>
                                     <td>{{ $comment->id  }}</td>
-                                    <td> <a target="_blank" href="/courses/{{ $comment->commentable->slug }}">{{ $comment->commentable->title  }}</a></td>
+                                    <td> <a target="_blank" href="{{ route('courses.show',[$comment->commentable->id,$comment->commentable->slug]) }}">{{ $comment->commentable->title  }}</a></td>
                                     <td>{{ $comment->user->fullName  }}</td>
                                     <td>{{ $comment->comment  }}</td>
                                     <td>{{ jdate($comment->created_at)  }}</td>
