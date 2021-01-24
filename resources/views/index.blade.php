@@ -121,7 +121,7 @@
                         <div class="box_grid">
                             <figure>
                                 <a style="display: none" href="#0" class="wish_bt"></a>
-                                <a href="/courses/{{ $course->slug  }}">
+                                <a href="{{ route('courses.show',[$course->id,$course->slug]) }}">
                                     <div class="preview"><span>مشاهده دوره آموزشی</span></div>
                                     {{--  <img src="{{ $course->images['239,215'] }}" class="img-fluid" alt=""></a>  --}}
                                 @if ($course->type == 'free')

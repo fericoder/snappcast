@@ -68,11 +68,10 @@ class CourseController extends Controller
      * @param  \App\Course  $course
      * @return \Illuminate\Http\Response
      */
-    public function show(Course $course, $slug)
+    public function show($id, Course $course)
     {
-
-        $course->where('slug', $slug)->increment('viewCount');
-        $course = Course::where('slug', $slug)->with('user', 'category', 'comments', 'sections', 'sections.episodes')->first();
+        $course->where('slug', $course->slug)->increment('viewCount');
+        $course = Course::where('slug', $course->slug)->with('user', 'category', 'comments', 'sections', 'sections.episodes')->first();
         $recentPosts = Course::where('published_at', '<',  \Carbon\Carbon::now())->orderBy('id', 'desc')->with('user')->limit(5)->get();
         $categories = Category::all();
 
