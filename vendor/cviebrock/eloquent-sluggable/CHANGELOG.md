@@ -1,5 +1,73 @@
 # Change Log
 
+## 8.0.4 - 20-Jan-2021
+
+- bug fix for #543#issuecomment-763391948 (thanks @dluague)
+
+
+## 8.0.3 - 19-Jan-2021
+
+- add ability to slug models on Eloquent's `saved` event, rather than
+  `saving`
+  - this adds a few more SQL queries per save, but allows for the use of
+    the primary key field in the `source` configuration (see #539 and #448)
+  - default configuration remains the same, but might change in a future release
+- add `slugEngineOptions` configuration option (see #454, thanks @Adioz01)
+- move automated testing from travis-ci to Github actions (#534, thanks @cbl)
+- clean up some third-party tools and badges
+- clean up docblocks, return hints, and PHPUnit method calls
+
+
+## 8.0.2 - 29-Nov-2020
+
+- support PHP 8.0 (#533, thanks @cbl)
+
+
+## 8.0.1 - 28-Sep-2020
+
+- fix when manually setting a slug to a "falsy" value (#527, thanks @huiyang)
+
+
+## 8.0.0 - 10-Sep-2020
+
+- Laravel 8 support
+
+
+## 7.0.1 - 06-Apr-2020
+
+- fix to help support translatable slugs (using either spatie or Astrotomic package) (#506, thanks @GeoSot) 
+
+
+## 7.0.0 - 04-Mar-2020
+
+- Laravel 7.0 support
+
+
+## 6.0.3 - 09-Feb-2020
+
+- bump [cocur/slugify](https://github.com/cocur/slugify) to `^4.0`
+
+
+## 6.0.2 - 09-Oct-2019
+
+- fix for PHP 7.4 beta (#486, thanks @KamaZzw)
+
+
+## 6.0.1 - 13-Sep-2019
+
+- fix for semantic versioning
+
+
+## 6.0.0 - 03-Sep-2019
+
+- Laravel 6.0 support (note the package version will now follow the Laravel version)
+
+
+## 4.8.0 - 28-Feb-2019
+
+- Laravel 5.8 support (#460, big thanks @tabuna)
+
+
 ## 4.7.0 - 24-Feb-2019
 
 - Fix slug getting set to `null` if model is updated with no source column loaded (#450, thanks @mylgeorge)

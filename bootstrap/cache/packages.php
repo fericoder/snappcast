@@ -21,6 +21,7 @@
       'SEOMeta' => 'Artesaos\\SEOTools\\Facades\\SEOMeta',
       'OpenGraph' => 'Artesaos\\SEOTools\\Facades\\OpenGraph',
       'Twitter' => 'Artesaos\\SEOTools\\Facades\\TwitterCard',
+      'JsonLd' => 'Artesaos\\SEOTools\\Facades\\JsonLd',
       'SEO' => 'Artesaos\\SEOTools\\Facades\\SEOTools',
     ),
   ),
@@ -43,6 +44,17 @@
     'providers' => 
     array (
       0 => 'Cviebrock\\EloquentSluggable\\ServiceProvider',
+    ),
+  ),
+  'facade/ignition' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Facade\\Ignition\\IgnitionServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Flare' => 'Facade\\Ignition\\Facades\\Flare',
     ),
   ),
   'fideloper/proxy' => 
@@ -74,18 +86,11 @@
       'Gateway' => 'Larabookir\\Gateway\\Gateway',
     ),
   ),
-  'laravel/nexmo-notification-channel' => 
+  'laravel/telescope' => 
   array (
     'providers' => 
     array (
-      0 => 'Illuminate\\Notifications\\NexmoChannelServiceProvider',
-    ),
-  ),
-  'laravel/slack-notification-channel' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Illuminate\\Notifications\\SlackChannelServiceProvider',
+      0 => 'Laravel\\Telescope\\TelescopeServiceProvider',
     ),
   ),
   'laravel/tinker' => 
@@ -93,6 +98,13 @@
     'providers' => 
     array (
       0 => 'Laravel\\Tinker\\TinkerServiceProvider',
+    ),
+  ),
+  'laravel/ui' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Laravel\\Ui\\UiServiceProvider',
     ),
   ),
   'nesbot/carbon' => 

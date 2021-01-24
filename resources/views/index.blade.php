@@ -123,7 +123,7 @@
                                 <a style="display: none" href="#0" class="wish_bt"></a>
                                 <a href="/courses/{{ $course->slug  }}">
                                     <div class="preview"><span>مشاهده دوره آموزشی</span></div>
-                                    <img src="{{ $course->images['239,215'] }}" class="img-fluid" alt=""></a>
+                                    {{--  <img src="{{ $course->images['239,215'] }}" class="img-fluid" alt=""></a>  --}}
                                 @if ($course->type == 'free')
                                     <div class="price"> رایگان! </div>
                                 @endif
@@ -222,7 +222,7 @@
                                     <li style="font-family: byekan" >{{ jdate($post->published_at)->format('%d %B %Y') }}</li>
                                 </ul>
                                 <h4 id="box-caption" >{{ $post->title }}</h4>
-                                <p  id="box-caption" > {{ str_limit($post->description, 100) }}</p>
+                                <p  id="box-caption" > {{ $post->description }}</p>
                             </a>
                         </div>
                             <!-- /box_news -->

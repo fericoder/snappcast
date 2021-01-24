@@ -96,7 +96,7 @@ class Newsletter
     {
         $response = $this->getMember($email, $listName);
 
-        if (! isset($response)) {
+        if (! $this->lastActionSucceeded()) {
             return false;
         }
 
@@ -142,6 +142,48 @@ class Newsletter
         return $response;
     }
 
+    public function deletePermanently(string $email, string $listName = '')
+    {
+        $list = $this->lists->findByName($listName);
+
+        $response = $this->mailChimp->post("lists/{$list->getId()}/members/{$this->getSubscriberHash($email)}/actions/delete-permanent");
+
+        return $response;
+    }
+
+    public function getTags(string $email, string $listName = '')
+    {
+        $list = $this->lists->findByName($listName);
+
+        return $this->mailChimp->get("lists/{$list->getId()}/members/{$this->getSubscriberHash($email)}/tags");
+    }
+
+    public function addTags(array $tags, string $email, string $listName = '')
+    {
+        $list = $this->lists->findByName($listName);
+
+        $payload = collect($tags)->map(function ($tag) {
+            return ['name' => $tag, 'status' => 'active'];
+        })->toArray();
+
+        return $this->mailChimp->post("lists/{$list->getId()}/members/{$this->getSubscriberHash($email)}/tags", [
+            'tags' => $payload,
+        ]);
+    }
+
+    public function removeTags(array $tags, string $email, string $listName = '')
+    {
+        $list = $this->lists->findByName($listName);
+
+        $payload = collect($tags)->map(function ($tag) {
+            return ['name' => $tag, 'status' => 'inactive'];
+        })->toArray();
+
+        return $this->mailChimp->post("lists/{$list->getId()}/members/{$this->getSubscriberHash($email)}/tags", [
+            'tags' => $payload,
+        ]);
+    }
+
     public function createCampaign(
         string $fromName,
         string $replyTo,
@@ -149,8 +191,8 @@ class Newsletter
         string $html = '',
         string $listName = '',
         array $options = [],
-        array $contentOptions = [])
-    {
+        array $contentOptions = []
+    ) {
         $list = $this->lists->findByName($listName);
 
         $defaultOptions = [
@@ -205,7 +247,7 @@ class Newsletter
     }
 
     /**
-     * @return array|false
+     * @return string|false
      */
     public function getLastError()
     {

@@ -2,6 +2,61 @@
 
 namespace Artesaos\SEOTools\Contracts;
 
+/**
+ * OpenGraph defines contract for the "OpenGraph" meta tags container.
+ *
+ * "OpenGraph" meta tags are widely used among social networks like Facebook during the "sharing" process.
+ *
+ * Usage example:
+ *
+ * ```php
+ * use Artesaos\SEOTools\OpenGraph; // implements `Artesaos\SEOTools\Contracts\OpenGraph`
+ *
+ * $openGraph = new OpenGraph();
+ *
+ * // specify meta info
+ * $openGraph->setTitle('Home');
+ * $openGraph->setDescription('This is my page description');
+ * $openGraph->setUrl('http://current.url.com');
+ * $openGraph->addProperty('type', 'articles');
+ *
+ * // render HTML, it should be placed within 'head' HTML tag
+ * echo $openGraph->generate();
+ * ```
+ *
+ * Implementation of this contract is available via {@see \Artesaos\SEOTools\Facades\OpenGraph} facade.
+ * Facade usage example:
+ *
+ * ```php
+ * use Artesaos\SEOTools\Facades\OpenGraph;
+ *
+ * // specify meta info
+ * OpenGraph::setTitle('Home');
+ * OpenGraph::setDescription('This is my page description');
+ * OpenGraph::setUrl('http://current.url.com');
+ * OpenGraph::addProperty('type', 'articles');
+ *
+ * // render HTML, it should be placed within 'head' HTML tag
+ * echo OpenGraph::generate();
+ * ```
+ *
+ * > Attention: namespace 'http://ogp.me/ns#' should appear at the HTML declaration tag in order for the "OpenGraph" tags
+ *   be recognized properly. You'll have to do this manually, so your HTML page structure should look like following:
+ *
+ * ```html
+ * <html prefix="og: http://ogp.me/ns#">
+ * <head>
+ * <title>...</title>
+ * ...
+ * </head>
+ * ...
+ * </html>
+ * ```
+ *
+ * @see https://ogp.me/
+ * @see \Artesaos\SEOTools\OpenGraph
+ * @see \Artesaos\SEOTools\Facades\OpenGraph
+ */
 interface OpenGraph
 {
     /**
@@ -12,7 +67,7 @@ interface OpenGraph
 
     /**
      * Generates open graph tags.
-     * 
+     *
      * @param bool $minify
      *
      * @return string
@@ -25,7 +80,7 @@ interface OpenGraph
      * @param string       $key
      * @param string|array $value
      *
-     * @return OpenGraph
+     * @return static
      */
     public function addProperty($key, $value);
 
@@ -34,7 +89,7 @@ interface OpenGraph
      *
      * @param string $key
      *
-     * @return OpenGraph
+     * @return static
      */
     public function removeProperty($key);
 
@@ -44,7 +99,7 @@ interface OpenGraph
      * @param string $url
      * @param array  $attributes
      *
-     * @return OpenGraph
+     * @return static
      */
     public function addImage($url, $attributes = []);
 
@@ -53,7 +108,7 @@ interface OpenGraph
      *
      * @param array $urls
      *
-     * @return OpenGraph
+     * @return static
      */
     public function addImages(array $urls);
 
@@ -62,7 +117,7 @@ interface OpenGraph
      *
      * @param string $title
      *
-     * @return OpenGraph
+     * @return static
      */
     public function setTitle($title);
 
@@ -71,7 +126,7 @@ interface OpenGraph
      *
      * @param string $description
      *
-     * @return OpenGraph
+     * @return static
      */
     public function setDescription($description);
 
@@ -80,7 +135,7 @@ interface OpenGraph
      *
      * @param string $url
      *
-     * @return OpenGraph
+     * @return static
      */
     public function setUrl($url);
 
@@ -89,15 +144,16 @@ interface OpenGraph
      *
      * @param string $name
      *
-     * @return OpenGraph
+     * @return static
      */
     public function setSiteName($name);
 
     /**
      * Define type property.
      *
+     * @param string|null $type set the opengraph type
      *
-     * @return OpenGraph
+     * @return static
      */
     public function setType($type = null);
 
@@ -106,7 +162,7 @@ interface OpenGraph
      *
      * @param array $attributes
      *
-     * @return OpenGraph
+     * @return static
      */
     public function setArticle($attributes = []);
 
@@ -115,7 +171,7 @@ interface OpenGraph
      *
      * @param array $attributes
      *
-     * @return OpenGraph
+     * @return static
      */
     public function setProfile($attributes = []);
 
@@ -124,7 +180,7 @@ interface OpenGraph
      *
      * @param array $attributes
      *
-     * @return OpenGraph
+     * @return static
      */
     public function setMusicSong($attributes = []);
 
@@ -133,7 +189,7 @@ interface OpenGraph
      *
      * @param array $attributes
      *
-     * @return OpenGraph
+     * @return static
      */
     public function setMusicAlbum($attributes = []);
 
@@ -142,7 +198,7 @@ interface OpenGraph
      *
      * @param array $attributes
      *
-     * @return OpenGraph
+     * @return static
      */
     public function setMusicPlaylist($attributes = []);
 
@@ -151,7 +207,7 @@ interface OpenGraph
      *
      * @param array $attributes
      *
-     * @return OpenGraph
+     * @return static
      */
     public function setMusicRadioStation($attributes = []);
 
@@ -160,7 +216,7 @@ interface OpenGraph
      *
      * @param array $attributes
      *
-     * @return OpenGraph
+     * @return static
      */
     public function setVideoMovie($attributes = []);
 
@@ -169,7 +225,7 @@ interface OpenGraph
      *
      * @param array $attributes
      *
-     * @return OpenGraph
+     * @return static
      */
     public function setVideoEpisode($attributes = []);
 
@@ -178,7 +234,7 @@ interface OpenGraph
      *
      * @param array $attributes
      *
-     * @return OpenGraph
+     * @return static
      */
     public function setVideoOther($attributes = []);
 
@@ -187,7 +243,7 @@ interface OpenGraph
      *
      * @param array $attributes
      *
-     * @return OpenGraph
+     * @return static
      */
     public function setVideoTVShow($attributes = []);
 
@@ -196,27 +252,27 @@ interface OpenGraph
      *
      * @param array $attributes
      *
-     * @return OpenGraph
+     * @return static
      */
     public function setBook($attributes = []);
 
     /**
-     * add Video properties.
+     * Add Video properties.
      *
      * @param string $source
      * @param array  $attributes
      *
-     * @return OpenGraph
+     * @return static
      */
     public function addVideo($source = null, $attributes = []);
 
     /**
-     * add audio properties.
+     * Add audio properties.
      *
      * @param string $source
      * @param array  $attributes
      *
-     * @return OpenGraph
+     * @return static
      */
     public function addAudio($source = null, $attributes = []);
 }

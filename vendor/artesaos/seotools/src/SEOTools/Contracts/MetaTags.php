@@ -4,19 +4,61 @@ namespace Artesaos\SEOTools\Contracts;
 
 use Illuminate\Config\Repository as Config;
 
+/**
+ * MetaTags defines contract for the HTML meta tags container.
+ *
+ * Meta tags container allows specification and rendering of HTML page title and meta tags.
+ *
+ * Usage example:
+ *
+ * ```php
+ * use Artesaos\SEOTools\SEOMeta; // implements `Artesaos\SEOTools\Contracts\MetaTags`
+ *
+ * $metaTags = new SEOMeta();
+ *
+ * // specify meta info
+ * $metaTags->setTitle('Home');
+ * $metaTags->setDescription('This is my page description');
+ * $metaTags->setCanonical('https://codecasts.com.br/lesson');
+ * $metaTags->addMeta('author', 'John Doe');
+ *
+ * // render HTML, it should be placed within 'head' HTML tag
+ * echo $metaTags->generate();
+ * ```
+ *
+ * Implementation of this contract is available via {@see \Artesaos\SEOTools\Facades\SEOMeta} facade.
+ * Facade usage example:
+ *
+ * ```php
+ * use Artesaos\SEOTools\Facades\SEOMeta;
+ *
+ * // specify meta info
+ * SEOMeta::setTitle('Home');
+ * SEOMeta::setDescription('This is my page description');
+ * SEOMeta::setCanonical('https://codecasts.com.br/lesson');
+ * SEOMeta::addMeta('author', 'John Doe');
+ *
+ * // render HTML, it should be placed within 'head' HTML tag
+ * echo SEOMeta::generate();
+ * ```
+ *
+ * @see https://www.w3schools.com/tags/tag_meta.asp
+ * @see \Artesaos\SEOTools\SEOMeta
+ * @see \Artesaos\SEOTools\Facades\SEOMeta
+ */
 interface MetaTags
 {
     /**
      * Configuration.
      *
-     * @param Config $config
+     * @param \Illuminate\Config\Repository $config
      * @return void
      */
     public function __construct(Config $config);
 
     /**
-     * Generates meta tags.
-     * 
+     * Generates meta tags HTML.
+     *
      * @param bool $minify
      *
      * @return string
@@ -29,7 +71,7 @@ interface MetaTags
      * @param string $title
      * @param bool   $appendDefault
      *
-     * @return MetaTags
+     * @return static
      */
     public function setTitle($title, $appendDefault = true);
 
@@ -38,7 +80,7 @@ interface MetaTags
      *
      * @param string $default
      *
-     * @return MetaTags
+     * @return static
      */
     public function setTitleDefault($default);
 
@@ -47,7 +89,7 @@ interface MetaTags
      *
      * @param string $separator
      *
-     * @return MetaTags
+     * @return static
      */
     public function setTitleSeparator($separator);
 
@@ -56,7 +98,7 @@ interface MetaTags
      *
      * @param string $description
      *
-     * @return MetaTags
+     * @return static
      */
     public function setDescription($description);
 
@@ -64,9 +106,9 @@ interface MetaTags
      * Sets the list of keywords, you can send an array or string separated with commas
      * also clears the previously set keywords.
      *
-     * @param array $keywords
+     * @param string|array $keywords
      *
-     * @return MetaTags
+     * @return static
      */
     public function setKeywords($keywords);
 
@@ -75,7 +117,7 @@ interface MetaTags
      *
      * @param string|array $keyword
      *
-     * @return MetaTags
+     * @return static
      */
     public function addKeyword($keyword);
 
@@ -84,7 +126,7 @@ interface MetaTags
      *
      * @param string $key
      *
-     * @return MetaTags
+     * @return static
      */
     public function removeMeta($key);
 
@@ -95,7 +137,7 @@ interface MetaTags
      * @param string       $value
      * @param string       $name
      *
-     * @return MetaTags
+     * @return static
      */
     public function addMeta($meta, $value = null, $name = 'name');
 
@@ -104,7 +146,7 @@ interface MetaTags
      *
      * @param string $url
      *
-     * @return MetaTags
+     * @return static
      */
     public function setCanonical($url);
 
@@ -113,7 +155,7 @@ interface MetaTags
      *
      * @param string $url
      *
-     * @return MetaTags
+     * @return static
      */
     public function setPrev($url);
 
@@ -122,7 +164,7 @@ interface MetaTags
      *
      * @param string $url
      *
-     * @return MetaTags
+     * @return static
      */
     public function setNext($url);
 
@@ -131,7 +173,8 @@ interface MetaTags
      *
      * @param string $lang language code in format ISO 639-1
      * @param string $url
-     * @return MetaTags
+     *
+     * @return static
      */
     public function addAlternateLanguage($lang, $url);
 
@@ -140,7 +183,7 @@ interface MetaTags
      *
      * @param array $languages
      *
-     * @return MetaTags
+     * @return static
      */
     public function addAlternateLanguages(array $languages);
 
@@ -182,7 +225,7 @@ interface MetaTags
     /**
      * Get the Meta description.
      *
-     * @return string
+     * @return string|null
      */
     public function getDescription();
 

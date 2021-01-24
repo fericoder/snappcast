@@ -2,9 +2,15 @@
 
 namespace Artesaos\SEOTools;
 
-use Artesaos\SEOTools\Contracts\MetaTags as MetaTagsContract;
+use Illuminate\Support\Arr;
 use Illuminate\Config\Repository as Config;
+use Artesaos\SEOTools\Contracts\MetaTags as MetaTagsContract;
 
+/**
+ * SEOMeta provides implementation for `MetaTags` contract.
+ *
+ * @see \Artesaos\SEOTools\Contracts\MetaTags
+ */
 class SEOMeta implements MetaTagsContract
 {
     /**
@@ -114,10 +120,11 @@ class SEOMeta implements MetaTagsContract
         'alexa'    => 'alexaVerifyID',
         'pintrest' => 'p:domain_verify',
         'yandex'   => 'yandex-verification',
+        'norton'   => 'norton-safeweb-site-verification',
     ];
 
     /**
-     * @param Config $config
+     * @param \Illuminate\Config\Repository $config
      */
     public function __construct(Config $config)
     {
@@ -125,11 +132,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Generates meta tags.
-     * 
-     * @param bool $minify
-     *
-     * @return string
+     * {@inheritdoc}/
      */
     public function generate($minify = false)
     {
@@ -149,7 +152,7 @@ class SEOMeta implements MetaTagsContract
         $html = [];
 
         if ($title) {
-            $html[] = "<title>$title</title>";
+            $html[] = Arr::get($this->config, 'add_notranslate_class', false) ? "<title class=\"notranslate\">$title</title>" : "<title>$title</title>";
         }
 
         if ($description) {
@@ -157,6 +160,11 @@ class SEOMeta implements MetaTagsContract
         }
 
         if (!empty($keywords)) {
+            
+            if($keywords instanceof \Illuminate\Support\Collection){
+                $keywords = $keywords->toArray();
+            }
+            
             $keywords = implode(', ', $keywords);
             $html[] = "<meta name=\"keywords\" content=\"{$keywords}\">";
         }
@@ -201,15 +209,13 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Sets the title.
-     *
-     * @param string $title
-     * @param bool   $appendDefault
-     *
-     * @return MetaTagsContract
+     * {@inheritdoc}
      */
     public function setTitle($title, $appendDefault = true)
     {
+        // open redirect vulnerability fix
+        $title = str_replace(['http-equiv=', 'url='], '', $title);
+        
         // clean title
         $title = strip_tags($title);
 
@@ -227,11 +233,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Sets the default title tag.
-     *
-     * @param string $default
-     *
-     * @return MetaTagsContract
+     * {@inheritdoc}
      */
     public function setTitleDefault($default)
     {
@@ -241,11 +243,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Sets the separator for the title tag.
-     *
-     * @param string $separator
-     *
-     * @return MetaTagsContract
+     * {@inheritdoc}
      */
     public function setTitleSeparator($separator)
     {
@@ -255,26 +253,19 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * @param string $description
-     *
-     * @return MetaTagsContract
+     * {@inheritdoc}
      */
     public function setDescription($description)
     {
         // clean and store description
         // if is false, set false
-        $this->description = (false == $description) ? $description : strip_tags(htmlentities($description));
+        $this->description = (false == $description) ? $description : htmlspecialchars($description, ENT_QUOTES, 'UTF-8', false);
 
         return $this;
     }
 
     /**
-     * Sets the list of keywords, you can send an array or string separated with commas
-     * also clears the previously set keywords.
-     *
-     * @param string|array $keywords
-     *
-     * @return MetaTagsContract
+     * {@inheritdoc}
      */
     public function setKeywords($keywords)
     {
@@ -292,11 +283,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Add a keyword.
-     *
-     * @param string|array $keyword
-     *
-     * @return MetaTagsContract
+     * {@inheritdoc}
      */
     public function addKeyword($keyword)
     {
@@ -310,27 +297,17 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Remove a metatag.
-     *
-     * @param string $key
-     *
-     * @return MetaTagsContract
+     * {@inheritdoc}
      */
     public function removeMeta($key)
     {
-        array_forget($this->metatags, $key);
+        Arr::forget($this->metatags, $key);
 
         return $this;
     }
 
     /**
-     * Add a custom meta tag.
-     *
-     * @param string|array $meta
-     * @param string       $value
-     * @param string       $name
-     *
-     * @return MetaTagsContract
+     * {@inheritdoc}
      */
     public function addMeta($meta, $value = null, $name = 'name')
     {
@@ -347,11 +324,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Sets the canonical URL.
-     *
-     * @param string $url
-     *
-     * @return MetaTagsContract
+     * {@inheritdoc}
      */
     public function setCanonical($url)
     {
@@ -375,11 +348,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Sets the prev URL.
-     *
-     * @param string $url
-     *
-     * @return MetaTagsContract
+     * {@inheritdoc}
      */
     public function setPrev($url)
     {
@@ -389,11 +358,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Sets the next URL.
-     *
-     * @param string $url
-     *
-     * @return MetaTagsContract
+     * {@inheritdoc}
      */
     public function setNext($url)
     {
@@ -403,12 +368,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Add an alternate language.
-     *
-     * @param string $lang language code in ISO 639-1 format
-     * @param string $url
-     *
-     * @return MetaTagsContract
+     * {@inheritdoc}
      */
     public function addAlternateLanguage($lang, $url)
     {
@@ -418,11 +378,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Add alternate languages.
-     *
-     * @param array $languages
-     *
-     * @return MetaTagsContract
+     * {@inheritdoc}
      */
     public function addAlternateLanguages(array $languages)
     {
@@ -446,9 +402,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Takes the title formatted for display.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getTitle()
     {
@@ -456,9 +410,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Takes the default title.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getDefaultTitle()
     {
@@ -470,9 +422,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * takes the title that was set.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getTitleSession()
     {
@@ -480,9 +430,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * takes the title that was set.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getTitleSeparator()
     {
@@ -490,9 +438,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Get the Meta keywords.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getKeywords()
     {
@@ -500,9 +446,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Get all metatags.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getMetatags()
     {
@@ -510,9 +454,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Get the Meta description.
-     *
-     * @return string|null
+     * {@inheritdoc}
      */
     public function getDescription()
     {
@@ -524,9 +466,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Get the canonical URL.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getCanonical()
     {
@@ -546,9 +486,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Get the prev URL.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getPrev()
     {
@@ -556,9 +494,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Get the next URL.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getNext()
     {
@@ -566,9 +502,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Get alternate languages.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getAlternateLanguages()
     {
@@ -586,9 +520,7 @@ class SEOMeta implements MetaTagsContract
     }
 
     /**
-     * Reset all data.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function reset()
     {
@@ -615,7 +547,12 @@ class SEOMeta implements MetaTagsContract
     {
         $default = $this->getDefaultTitle();
 
-        return (empty($default)) ? $title : $title.$this->getTitleSeparator().$default;
+        if (empty($default)) {
+            return $title;
+        }
+        $defaultBefore = $this->config->get('defaults.titleBefore', false);
+
+        return $defaultBefore ? $default.$this->getTitleSeparator().$title : $title.$this->getTitleSeparator().$default;
     }
 
     /**
@@ -625,7 +562,7 @@ class SEOMeta implements MetaTagsContract
     {
         foreach ($this->config->get('webmaster_tags', []) as $name => $value) {
             if (!empty($value)) {
-                $meta = array_get($this->webmasterTags, $name, $name);
+                $meta = Arr::get($this->webmasterTags, $name, $name);
                 $this->addMeta($meta, $value);
             }
         }

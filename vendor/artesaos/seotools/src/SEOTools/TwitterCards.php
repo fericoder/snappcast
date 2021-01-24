@@ -4,6 +4,11 @@ namespace Artesaos\SEOTools;
 
 use Artesaos\SEOTools\Contracts\TwitterCards as TwitterCardsContract;
 
+/**
+ * TwitterCards provides implementation for `TwitterCards` contract.
+ *
+ * @see \Artesaos\SEOTools\Contracts\TwitterCards
+ */
 class TwitterCards implements TwitterCardsContract
 {
     /**
@@ -35,9 +40,7 @@ class TwitterCards implements TwitterCardsContract
     }
 
     /**
-     * @param bool $minify
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function generate($minify = false)
     {
@@ -80,14 +83,12 @@ class TwitterCards implements TwitterCardsContract
      */
     private function makeTag($key, $value)
     {
+        $value = str_replace(['http-equiv=', 'url='], '', $value);
         return '<meta name="'.$this->prefix.strip_tags($key).'" content="'.strip_tags($value).'" />';
     }
 
     /**
-     * @param string       $key
-     * @param string|array $value
-     *
-     * @return TwitterCardsContract
+     * {@inheritdoc}
      */
     public function addValue($key, $value)
     {
@@ -97,9 +98,7 @@ class TwitterCards implements TwitterCardsContract
     }
 
     /**
-     * @param string $title
-     *
-     * @return TwitterCardsContract
+     * {@inheritdoc}
      */
     public function setTitle($title)
     {
@@ -107,9 +106,7 @@ class TwitterCards implements TwitterCardsContract
     }
 
     /**
-     * @param string $type
-     *
-     * @return TwitterCardsContract
+     * {@inheritdoc}
      */
     public function setType($type)
     {
@@ -117,9 +114,7 @@ class TwitterCards implements TwitterCardsContract
     }
 
     /**
-     * @param string $site
-     *
-     * @return TwitterCardsContract
+     * {@inheritdoc}
      */
     public function setSite($site)
     {
@@ -127,19 +122,15 @@ class TwitterCards implements TwitterCardsContract
     }
 
     /**
-     * @param string $description
-     *
-     * @return TwitterCardsContract
+     * {@inheritdoc}
      */
     public function setDescription($description)
     {
-        return $this->addValue('description', htmlentities($description));
+        return $this->addValue('description', htmlspecialchars($description, ENT_QUOTES, 'UTF-8', false));
     }
 
     /**
-     * @param string $url
-     *
-     * @return TwitterCardsContract
+     * {@inheritdoc}
      */
     public function setUrl($url)
     {
@@ -147,25 +138,21 @@ class TwitterCards implements TwitterCardsContract
     }
 
     /**
-     * @param string|array $image
-     *
-     * @return TwitterCardsContract
+     * {@inheritdoc}
      *
      * @deprecated use setImage($image) instead
      */
     public function addImage($image)
     {
-        foreach ((array)$image as $url):
+        foreach ((array) $image as $url) {
             $this->images[] = $url;
-        endforeach;
+        }
 
         return $this;
     }
 
     /**
-     * @param string|array $images
-     *
-     * @return TwitterCardsContract
+     * {@inheritdoc}
      *
      * @deprecated use setImage($image) instead
      */

@@ -8,7 +8,7 @@ return [
      *
      *     $model->name;
      *
-     * Or it can be an array of fields, like ("name", "company"), which builds a slug from:
+     * Or it can be an array of fields, like ["name", "company"], which builds a slug from:
      *
      *     $model->name . ' ' . $model->company;
      *
@@ -137,5 +137,11 @@ return [
      */
     
     'onUpdate' => false,
+
+    /**
+     * If the default slug engine of cocur/slugify is used, this array of
+     * configuration options will be used when instantiating the engine.
+     */
+    'slugEngineOptions' => [],
 
 ];

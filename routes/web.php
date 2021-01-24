@@ -1,7 +1,8 @@
 <?php
 
-use Shetabit\Payment\Invoice;
-use Shetabit\Payment\Facade\Payment;
+// use Shetabit\Payment\Invoice;
+// use Shetabit\Payment\Facade\Payment;
+Auth::routes();
 
 Route::namespace('Dashboard')->prefix('dashboard')->middleware('auth')->group(function () {
 
@@ -67,7 +68,6 @@ Route::post('/comment/answer', 'Dashboard\CommentController@answer')->middleware
 
 
 
-Auth::routes();
 Route::get('dashboard/logout', 'Auth\LoginController@logout')->name('logout');
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');
 

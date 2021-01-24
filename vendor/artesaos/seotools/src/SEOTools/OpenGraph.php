@@ -2,8 +2,14 @@
 
 namespace Artesaos\SEOTools;
 
+use Illuminate\Support\Arr;
 use Artesaos\SEOTools\Contracts\OpenGraph as OpenGraphContract;
 
+/**
+ * OpenGraph provides implementation for `OpenGraph` contract.
+ *
+ * @see \Artesaos\SEOTools\Contracts\OpenGraph
+ */
 class OpenGraph implements OpenGraphContract
 {
     /**
@@ -19,6 +25,13 @@ class OpenGraph implements OpenGraphContract
      * @var array
      */
     protected $config;
+
+    /**
+     * Url property
+     *
+     * @var string
+     */
+    protected $url = '';
 
     /**
      * Array of Properties.
@@ -152,11 +165,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Generates open graph tags.
-     *
-     * @param bool $minify
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function generate($minify = false)
     {
@@ -213,8 +222,13 @@ class OpenGraph implements OpenGraphContract
         foreach ($properties as $property => $value) {
             // multiple properties
             if (is_array($value)) {
-                $subListPrefix = (is_string($property)) ? $property : $prefix;
-                $subList = $this->eachProperties($value, $subListPrefix);
+                if (is_string($property)){
+                    $subListPrefix = $prefix.":".$property;
+                    $subList = $this->eachProperties($value, $subListPrefix, false);
+                } else {
+                    $subListPrefix = (is_string($property)) ? $property : $prefix;
+                    $subList = $this->eachProperties($value, $subListPrefix);
+                }
 
                 $html[] = $subList;
             } else {
@@ -249,6 +263,7 @@ class OpenGraph implements OpenGraphContract
      */
     protected function makeTag($key = null, $value = null, $ogPrefix = false)
     {
+        $value = str_replace(['http-equiv=', 'url='], '', $value);
         return sprintf(
             '<meta property="%s%s" content="%s" />%s',
             $ogPrefix ? $this->og_prefix : '',
@@ -270,12 +285,16 @@ class OpenGraph implements OpenGraphContract
             [];
 
         foreach ($defaults as $key => $value) {
-            if ($key == 'images') {
+            if ($key === 'images') {
                 if (empty($this->images)) {
                     $this->images = $value;
                 }
-            } elseif ($key == 'url' && $value === null) {
-                $this->setUrl(app('url')->current());
+            } elseif ($key === 'url' && empty($value)) {
+                if ($value === null) {
+                    $this->addProperty('url', $this->url ?: app('url')->current());
+                } elseif ($this->url) {
+                    $this->addProperty('url', $this->url);
+                }
             } elseif (! empty($value) && ! array_key_exists($key, $this->properties)) {
                 $this->addProperty($key, $value);
             }
@@ -283,12 +302,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Add or update property.
-     *
-     * @param string       $key   key of property
-     * @param string|array $value value of property
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function addProperty($key, $value)
     {
@@ -298,11 +312,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Set article properties.
-     *
-     * @param array $attributes opengraph article attributes
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function setArticle($attributes = [])
     {
@@ -326,11 +336,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Set profile properties.
-     *
-     * @param array $attributes opengraph profile attributes
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function setProfile($attributes = [])
     {
@@ -352,11 +358,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Set book properties.
-     *
-     * @param array $attributes opengraph book attributes
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function setBook($attributes = [])
     {
@@ -373,11 +375,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Set music song properties.
-     *
-     * @param array $attributes opengraph music.song attributes
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function setMusicSong($attributes = [])
     {
@@ -400,11 +398,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Set music album properties.
-     *
-     * @param array $attributes opengraph music.album attributes
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function setMusicAlbum($attributes = [])
     {
@@ -427,11 +421,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Set music playlist properties.
-     *
-     * @param array $attributes opengraph music.playlist attributes
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function setMusicPlaylist($attributes = [])
     {
@@ -453,11 +443,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Set music radio station properties.
-     *
-     * @param array $attributes opengraph music.radio_station attributes
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function setMusicRadioStation($attributes = [])
     {
@@ -476,11 +462,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Set video movie properties.
-     *
-     * @param array $attributes opengraph video.movie attributes
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function setVideoMovie($attributes = [])
     {
@@ -505,11 +487,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Set video episode properties.
-     *
-     * @param array $attributes opengraph video.episode attributes
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function setVideoEpisode($attributes = [])
     {
@@ -535,11 +513,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Set video episode properties.
-     *
-     * @param array $attributes opengraph video.other attributes
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function setVideoOther($attributes = [])
     {
@@ -564,11 +538,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Set video episode properties.
-     *
-     * @param array $attributes opengraph video.tv_show attributes
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function setVideoTVShow($attributes = [])
     {
@@ -593,12 +563,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Add video properties.
-     *
-     * @param string $source     url of video source
-     * @param array  $attributes opengraph video attributes
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function addVideo($source = null, $attributes = [])
     {
@@ -619,12 +584,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Add audio properties.
-     *
-     * @param string $source     url for audio source
-     * @param array  $attributes opengraph audio attributes
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function addAudio($source = null, $attributes = [])
     {
@@ -741,26 +701,17 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Remove property.
-     *
-     * @param string $key key
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function removeProperty($key)
     {
-        array_forget($this->properties, $key);
+        Arr::forget($this->properties, $key);
 
         return $this;
     }
 
     /**
-     * Add image to properties.
-     *
-     * @param mixed $source     URL of image source
-     * @param array $attributes Object type attributes
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function addImage($source = null, $attributes = [])
     {
@@ -770,6 +721,7 @@ class OpenGraph implements OpenGraphContract
             'type',
             'width',
             'height',
+            'alt',
         ];
 
         if (is_array($source)) {
@@ -785,11 +737,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Add images to properties.
-     *
-     * @param array $urls array of image urls
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function addImages(array $urls)
     {
@@ -799,11 +747,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Define type property.
-     *
-     * @param string $type set the opengraph type
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function setType($type = null)
     {
@@ -811,11 +755,7 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Define title property.
-     *
-     * @param string $title set the opengraph title
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function setTitle($title = null)
     {
@@ -823,35 +763,25 @@ class OpenGraph implements OpenGraphContract
     }
 
     /**
-     * Define description property.
-     *
-     * @param string $description set the opengraph description
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function setDescription($description = null)
     {
-        return $this->addProperty('description', htmlentities($description));
+        return $this->addProperty('description', htmlspecialchars($description, ENT_QUOTES, 'UTF-8', false));
     }
 
     /**
-     * Define url property.
-     *
-     * @param string $url set the opengraph url
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function setUrl($url)
     {
-        return $this->addProperty('url', $url);
+        $this->url = $url;
+
+        return $this;
     }
 
     /**
-     * Define site_name property.
-     *
-     * @param string $name set the site_name
-     *
-     * @return OpenGraphContract
+     * {@inheritdoc}
      */
     public function setSiteName($name)
     {
