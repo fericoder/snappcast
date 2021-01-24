@@ -70,6 +70,7 @@ class CourseController extends Controller
      */
     public function show($id, Course $course)
     {
+        
         $course->where('slug', $course->slug)->increment('viewCount');
         $course = Course::where('slug', $course->slug)->with('user', 'category', 'comments', 'sections', 'sections.episodes')->first();
         $recentPosts = Course::where('published_at', '<',  \Carbon\Carbon::now())->orderBy('id', 'desc')->with('user')->limit(5)->get();
