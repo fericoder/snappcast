@@ -42,7 +42,7 @@
                                     <small>توسط: {{ $post->user->fullName  }} -</small>
                                     <small style="margin-bottom: 10px">{{ jdate($post->published_at)->format('%d %B %Y') }}</small>
                                     <h3 style="margin-top: 8px;">{{ $post->title  }}</h3>
-                                    <p style="margin-bottom: 0px">{{ str_limit($post->description, 40)  }}</p>
+                                    <p style="margin-bottom: 0px">{{ \Illuminate\Support\Str::limit($post->description, 40)  }}</p>
                                 </div>
                                 <ul>
                                     <li></li>

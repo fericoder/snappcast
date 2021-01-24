@@ -1,0 +1,7 @@
+ALTER TABLE `courses` ADD `status` ENUM('درحال برگزاری','به اتمام رسیده','شروع نشده') NOT NULL DEFAULT 'درحال برگزاری' AFTER `buyCount`;
+ALTER TABLE `courses` CHANGE `status` `status` ENUM('درحال برگزاری','تکمیل شده','شروع نشده') CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT 'درحال برگزاری';
+
+
+
+
+

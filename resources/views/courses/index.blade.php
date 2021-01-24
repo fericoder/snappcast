@@ -36,7 +36,7 @@
                                         <small>{{ jdate($course->published_at)->format('%d %B %Y') }}</small><br><br>
                                         <h3><a href="{{ route('courses.show',[$course->id,$course->slug]) }}">{{ $course->title  }}</a></h3>
                                         <p>
-                                            {{ str_limit($course->description, 400)  }}
+                                            {{ \Illuminate\Support\Str::limit($course->description, 400)  }}
                                         </p>
                                         <ul style="text-align: center" >
                                             <li style="float: left; font-family: byekan"> <div class="thumb">

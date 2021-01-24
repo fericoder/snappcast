@@ -78,11 +78,18 @@
 
 
 
-                                    <br><hr><div id="list_feat">
+                                    <br><hr>
+                                    <div id="list_feat">
                                        <p style="font-family: BYekan; margin-bottom: 15px;"> <i class="icon-videocam"></i> تعداد قسمت های دوره: {{ $course->episodesCount }} </p>
                                         <p style="font-family: BYekan;margin-bottom: 15px;"><i class="icon-clock-3"></i> مدت زمان دوره:  {{ implode(':', str_split($course->episodes->sum('timeClear'), 2) ) }}</p>
                                         <p style="font-family: BYekan;margin-bottom: 15px;"><i class="icon-users"></i> تعداد دانشجویان: {{ $course->users->count() }} دانشجو </p>
-                                        <p style="margin-bottom: 15px;"><i class="icon-info-circled"></i> وضعیت دوره: درحال برگذاری  <i class=" icon-spin4 animate-spin"></i></p>
+                                        <p style="margin-bottom: 15px;"><i class="icon-info-circled"></i>
+                                            وضعیت دوره:
+
+                                            {{ $course->status }}
+                                            {!!  $course->status == 'درحال برگزاری' ?  '<i class=" icon-spin4 animate-spin"></i>' : '' !!}
+
+                                        </p>
                                         <p style="font-family: BYekan;margin-bottom: 15px;"><i class="icon-calendar"></i> تاریخ ایجاد دوره: {{ jdate($course->created_at) }}</p>
                                         <p style="font-family: BYekan;margin-bottom: 15px;"><i class="icon-calendar"></i>  آخرین بروزرسانی: {{ jdate($course->updated_at) }}</p>
                                     </div>

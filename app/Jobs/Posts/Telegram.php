@@ -30,7 +30,7 @@ class Telegram
     public function handle()
     {
             $image =  "http://modirproje.com".$this->post->images['848,566'];
-            $caption = str_limit($this->post->title, 100);
+            $caption = \Illuminate\Support\Str::limit($this->post->title, 100);
             $caption .= "\n\n";
             $caption .= "https://modirproje.com/posts/".$this->post->slug;
             $caption = urlencode($caption);

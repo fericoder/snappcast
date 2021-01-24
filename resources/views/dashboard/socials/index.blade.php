@@ -155,7 +155,7 @@
                             <tr>
                                 <td>{{ $social->id  }}</td>
                                 <td>{{ $social->socialMedia  }}</td>
-                                <td>{{ str_limit($social->caption, 30)  }}</td>
+                                <td>{{ \Illuminate\Support\Str::limit($social->caption, 30)  }}</td>
                                 <td>{{ $social->published_at }}</td>
                                 <td>{{ jdate($social->LastAction)  }}</td>
                                 <td>

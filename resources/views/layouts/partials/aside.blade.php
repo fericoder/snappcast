@@ -12,7 +12,11 @@
                         <a href="{{ route('posts.show',[$recentPost->id,$recentPost->slug]) }}"><img src="{{ $recentPost->images['120,80'] }}" alt="{{ $recentPost->title }}"></a>
                     </div>
                     <small>{{ jdate($recentPost->published_at)->ago() }}</small>
+<<<<<<< HEAD
                     <h3><a href="{{ route('posts.show',[$recentPost->id,$recentPost->slug]) }}" title="">{{ str_limit($recentPost->title, 50) }}</a></h3>
+=======
+                    <h3><a href="/posts/{{ $recentPost->slug }}" title="">{{ \Illuminate\Support\Str::limit($recentPost->title, 50) }}</a></h3>
+>>>>>>> 24233b1bbc51ce687b261097bb38f1a252381419
                 </li>
             @endforeach
         </ul>
