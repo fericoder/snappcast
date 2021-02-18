@@ -119,7 +119,7 @@ Contact: rahmani@rieco.ir
             <div class="m-stack m-stack--flex-tablet-and-mobile m-stack--ver m-stack--desktop">
                 <div class="m-stack__item m-stack__item--left m-stack__item--middle m-stack__item--last">
 				<span class="m-footer__copyright">
-					2018 &copy; تمامی حقوق محفوظ است.| طراحی شده در دپارتمان توسعه ریکو </a>
+					2018 &copy; تمامی حقوق محفوظ است.| طراحی شده در دپارتمان توسعه یاسان </a>
 				</span>
                 </div>
                 <div class="m-stack__item m-stack__item--right m-stack__item--middle m-stack__item--first">
